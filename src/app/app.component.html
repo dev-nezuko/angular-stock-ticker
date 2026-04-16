@@ -1,0 +1,12 @@
+<div class="shell">
+  <header class="shell__header">
+    <h1 class="shell__title">Stock feed dashboard</h1>
+    <p class="shell__subtitle">Four symbols · Use each toggle to pause updates · Simulated prices are labeled</p>
+  </header>
+
+  <div class="shell__grid">
+    @for (s of stocks; track s.symbol) {
+      <app-stock-card [quote]="quotes()[s.symbol]" />
+    }
+  </div>
+</div>

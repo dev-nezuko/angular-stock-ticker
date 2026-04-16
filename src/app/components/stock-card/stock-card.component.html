@@ -1,0 +1,51 @@
+@if (display(); as q) {
+  <article class="card" [ngClass]="cardClass()" aria-live="polite">
+    <div class="card__body">
+      <p class="card__ticker">{{ q.symbol }}</p>
+      <p class="card__name">{{ q.name }}</p>
+      <p>{{ q.source === "provider" ? "Provider quote" : "Simulated · demo data" }}{{ enabled() ? "" : " · Paused" }}</p>
+      <p class="card__price">
+        <span class="card__currency">$</span>{{ q.current | number: '1.2-2' }}
+      </p>
+
+      <div class="card__stats">
+        <div class="card__stat">
+          <span class="card__stat-label">Day high</span>
+          <span class="card__stat-value">{{ q.dayHigh == null ? 'Unavailable' : (q.dayHigh | number: '1.2-2') }}</span>
+        </div>
+        <div class="card__stat">
+          <span class="card__stat-label">Day low</span>
+          <span class="card__stat-value">{{ q.dayLow == null ? 'Unavailable' : (q.dayLow | number: '1.2-2') }}</span>
+        </div>
+        <div class="card__stat card__stat--desktop">
+          <span class="card__stat-label">52-week high</span>
+          <span class="card__stat-value">{{ q.week52High == null ? 'Unavailable' : (q.week52High | number: '1.2-2') }}</span>
+        </div>
+        <div class="card__stat card__stat--desktop">
+          <span class="card__stat-label">52-week low</span>
+          <span class="card__stat-value">{{ q.week52Low == null ? 'Unavailable' : (q.week52Low | number: '1.2-2') }}</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="card__toggle-row">
+      <button
+        type="button"
+        class="card__toggle"
+        [class.card__toggle--on]="enabled()"
+        [attr.aria-pressed]="enabled()"
+        [attr.aria-label]="(enabled() ? 'Pause ' : 'Resume ') + q.symbol + ' updates'"
+        (click)="toggle(); $event.stopPropagation()"
+      >
+        <span class="card__toggle-track">
+          <span class="card__toggle-knob"></span>
+        </span>
+        <span class="card__toggle-text">{{ enabled() ? 'ON' : 'OFF' }}</span>
+      </button>
+    </div>
+  </article>
+} @else {
+  <article class="card card--loading" aria-busy="true">
+    <p class="card__loading">Waiting for data…</p>
+  </article>
+}
